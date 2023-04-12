@@ -4,6 +4,8 @@ process that data and display
 toggle between cel and fahr
 
 unix conversion function.
+
+decide what information you want to display.
 use fetch, asyn await*/
 
 const city = document.getElementById("city");
@@ -27,7 +29,6 @@ async function getWeather(place = "London", country = "uk") {
   displayData(data.weather[0].main);
   displayData(convertUnixToDate(data.sys.sunrise));
   displayData(convertUnixToDate(data.sys.sunset));
-  console.log(typeof data, typeof weatherData);
   return data;
   //returning data this way, not as obj{}, means we have access to it outside of this function! very cool
 }
@@ -40,6 +41,7 @@ function convertUnixToDate(unix) {
   const unixToMilliseconds = unix * 1000;
   const date = new Date(unixToMilliseconds);
   return date.toLocaleString();
+  //or toLocalTimeString, just gives actual time
 }
 
 function displayData(data) {
@@ -48,6 +50,8 @@ function displayData(data) {
   newHeader.innerText = data;
 }
 
+/* declare async so we can use await to wait from data from getWeather to return
+getWeather returns obj that we can access different values of from dot notation. */
 async function getTemp() {
   try {
     let data = await getWeather();
@@ -57,6 +61,15 @@ async function getTemp() {
     console.log("not gettign here");
   }
 }
+
+/* async function setBackGroundColour(){
+  try{
+    const data = await getWeather();
+    const weatherID = data.weather[0].id;
+
+    if(weather == )
+  }
+} */
 
 getWeather();
 getTemp();

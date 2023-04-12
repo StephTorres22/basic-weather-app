@@ -1,0 +1,9 @@
+/* Colours */
+
+:root{
+    /* BACKGROUND COLOURS */
+    --clear-colour: rgb(56, 129, 240);
+    --overcaste-colour: rgb(109, 104, 104);
+    --wet-colour: rgb(59, 58, 63);
+    --sunny-colour: rgb(108, 201, 255);    
+}
