@@ -54,8 +54,8 @@ function displayData(data) {
 getWeather returns obj that we can access different values of from dot notation. */
 async function getTemp() {
   try {
-    let data = await getWeather();
-    let temp = await data.main.temp;
+    const data = await getWeather();
+    const temp = await data.main.temp;
     displayData(temp);
   } catch {
     console.log("not gettign here");
@@ -63,6 +63,10 @@ async function getTemp() {
 }
 
 /* async function setBackGroundColour(){
+
+  //could set background colour based of id numbers, store in different arrays and check if id is present in each.
+  const 
+
   try{
     const data = await getWeather();
     const weatherID = data.weather[0].id;

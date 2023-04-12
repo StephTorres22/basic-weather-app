@@ -241,6 +241,66 @@
       "icon": "13d"
     },
     {
+      "id": 701,
+      "main": "Mist",
+      "description": "mist",
+      "icon": "50d"
+    },
+    {
+      "id": 711,
+      "main": "Smoke",
+      "description": "smoke",
+      "icon": "50d"
+    },
+    {
+      "id": 721,
+      "main": "Haze",
+      "description": "haze",
+      "icon": "50d"
+    },
+    {
+      "id": 731,
+      "main": "Dust",
+      "description": "sand/dust whirls",
+      "icon": "50d"
+    },
+    {
+      "id": 741,
+      "main": "Fog",
+      "description": "fog",
+      "icon": "50d"
+    },
+    {
+      "id": 751,
+      "main": "Sand",
+      "description": "sand",
+      "icon": "50d"
+    },
+    {
+      "id": 761,
+      "main": "Dust",
+      "description": "mist",
+      "icon": "50d"
+    },
+    {
+      "id": 762,
+      "main": "Ash",
+      "description": "volcanic ash",
+      "icon": "50d"
+    },
+    {
+      "id": 771,
+      "main": "Squall",
+      "description": "squalls",
+      "icon": "50d"
+    },
+    {
+      "id": 781,
+      "main": "Tornado",
+      "description": "tornado",
+      "icon": "50d"
+    },
+    {
       "id": 800,
       "main": "Clear",
       "description": "clear sky",
