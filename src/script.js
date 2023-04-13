@@ -6,7 +6,15 @@ toggle between cel and fahr
 unix conversion function.
 
 decide what information you want to display.
+
+need a function to refresh display each time btn is clicked
 use fetch, asyn await*/
+
+import weatherConditionsData from "../weatherCondition.json"; //this accessible straight away!
+
+weatherConditionsData["Weather Conditons"].forEach((condition) => {
+  console.log(condition.id);
+});
 
 const city = document.getElementById("city");
 const getWeatherBtn = document.getElementById("getWeatherBtn");
