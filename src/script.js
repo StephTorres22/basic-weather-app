@@ -9,13 +9,10 @@ decide what information you want to display.
 
 need a function to refresh display each time btn is clicked
 use fetch, asyn await*/
-
+import "../src/style.css";
 import weatherConditionsData from "../weatherCondition.json"; //this accessible straight away!
 
-weatherConditionsData["Weather Conditons"].forEach((condition) => {
-  console.log(condition.id);
-});
-
+const docuBody = document.querySelector("body");
 const city = document.getElementById("city");
 const getWeatherBtn = document.getElementById("getWeatherBtn");
 const header = document.getElementById("h1");
@@ -23,6 +20,7 @@ const header = document.getElementById("h1");
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
   getWeather();
+  setBackGroundColour();
 });
 
 async function getWeather(place = "London", country = "uk") {
@@ -34,9 +32,9 @@ async function getWeather(place = "London", country = "uk") {
   const data = await weatherData.json();
   console.log(data);
   console.log(data.main);
-  displayData(data.weather[0].main);
+  /*  displayData(data.weather[0].main);
   displayData(convertUnixToDate(data.sys.sunrise));
-  displayData(convertUnixToDate(data.sys.sunset));
+  displayData(convertUnixToDate(data.sys.sunset)); */
   return data;
   //returning data this way, not as obj{}, means we have access to it outside of this function! very cool
 }
@@ -66,22 +64,48 @@ async function getTemp() {
     const temp = await data.main.temp;
     displayData(temp);
   } catch {
-    console.log("not gettign here");
+    console.log("not reading weather temp");
   }
 }
 
-/* async function setBackGroundColour(){
+async function setBackGroundColour() {
+  // const overcasteColour = "rgb(109, 104, 104)";
+  const sunnyColouredIDs = [500, 800, 801];
+  const overcasteColouredIDs = [
+    200, 210, 230, 231, 300, 301, 520, 741, 701, 802, 803, 600, 612, 615, 521,
+    201, 311, 321, 313, 511, 501, 522, 601, 611, 613, 620, 621, 721, 804,
+  ];
+  const gloomyColouredIDs = [
+    202, 211, 212, 221, 232, 302, 312, 314, 502, 503, 504, 531, 602, 616, 622,
+    711, 731, 761, 762, 771, 781,
+  ];
+
+  async function getCurrentWeatherId() {
+    try {
+      const data = await getWeather();
+      const id = await data.weather[0].id;
+      return id;
+    } catch {
+      console.log("Couldn't get current weather id");
+    }
+  }
+
+  const currentWeatherId = await getCurrentWeatherId();
+
+  if (sunnyColouredIDs.includes(currentWeatherId)) {
+    docuBody.style.backgroundColor = "var(--sunny-colour)";
+  }
+
+  if (gloomyColouredIDs.includes(currentWeatherId)) {
+    docuBody.style.backgroundColor = "var(--gloomy-colour)";
+  }
+
+  if (overcasteColouredIDs.includes(currentWeatherId)) {
+    docuBody.style.backgroundColor = "var(--overcaste-colour)";
+  }
 
   //could set background colour based of id numbers, store in different arrays and check if id is present in each.
-  const 
-
-  try{
-    const data = await getWeather();
-    const weatherID = data.weather[0].id;
-
-    if(weather == )
-  }
-} */
-
+}
+setBackGroundColour();
 getWeather();
 getTemp();

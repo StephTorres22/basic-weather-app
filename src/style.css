@@ -1,0 +1,14 @@
+/* Colours */
+
+:root {
+  /* BACKGROUND COLOURS */
+  --clear-colour: rgb(56, 129, 240);
+  --overcaste-colour: rgb(153, 151, 151);
+  --gloomy-colour: rgb(89, 87, 95);
+  --sunny-colour: rgb(108, 201, 255);
+}
+
+body {
+  margin: 2rem;
+  background-color: aliceblue;
+}
