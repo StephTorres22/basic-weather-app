@@ -19,11 +19,13 @@ const header = document.getElementById("h1");
 
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
+  getIcon();
   getWeather();
   setBackGroundColour();
 });
 
 async function getWeather(place = "London", country = "uk") {
+  /* try catch, handle errors! */
   place = city.value || place; //this calls either the value of input, or default value
   const weatherData = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${place}&APPID=f0c63b9adde40dfb29e7181d535c8598&units=metric`, //&units changes whether standard cel or far
@@ -68,6 +70,16 @@ async function getTemp() {
   }
 }
 
+async function getCurrentWeatherId() {
+  try {
+    const data = await getWeather();
+    const id = await data.weather[0].id;
+    return id;
+  } catch {
+    console.log("Couldn't get current weather id");
+  }
+}
+
 async function setBackGroundColour() {
   // const overcasteColour = "rgb(109, 104, 104)";
   const sunnyColouredIDs = [500, 800, 801];
@@ -80,16 +92,7 @@ async function setBackGroundColour() {
     711, 731, 761, 762, 771, 781,
   ];
 
-  async function getCurrentWeatherId() {
-    try {
-      const data = await getWeather();
-      const id = await data.weather[0].id;
-      return id;
-    } catch {
-      console.log("Couldn't get current weather id");
-    }
-  }
-
+  /* put in try catch handle your errors! */
   const currentWeatherId = await getCurrentWeatherId();
 
   if (sunnyColouredIDs.includes(currentWeatherId)) {
@@ -106,6 +109,16 @@ async function setBackGroundColour() {
 
   //could set background colour based of id numbers, store in different arrays and check if id is present in each.
 }
+
+async function getIcon() {
+  const data = await getWeather();
+  const iconNumber = await data.weather[0].icon;
+  const weatherIcon = document.createElement("img");
+  weatherIcon.src = `https://openweathermap.org/img/wn/${iconNumber}@2x.png`;
+  docuBody.appendChild(weatherIcon);
+}
+
+getIcon();
 setBackGroundColour();
 getWeather();
 getTemp();
