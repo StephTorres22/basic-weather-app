@@ -20,6 +20,7 @@ const header = document.getElementById("h1");
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
   getIcon();
+  getTemp();
   getWeather();
   setBackGroundColour();
 });
@@ -32,8 +33,8 @@ async function getWeather(place = "London", country = "uk") {
     { mode: "cors" }
   );
   const data = await weatherData.json();
-  console.log(data);
-  console.log(data.main);
+  /* console.log(data);
+  console.log(data.main); */
   /*  displayData(data.weather[0].main);
   displayData(convertUnixToDate(data.sys.sunrise));
   displayData(convertUnixToDate(data.sys.sunset)); */
@@ -118,7 +119,25 @@ async function getIcon() {
   docuBody.appendChild(weatherIcon);
 }
 
-getIcon();
+/* this uses weatherconditions json as source for each description and weather type comparing against id of object, vs current weather id from
+openweather. */
+async function getDescription() {
+  try {
+    const id = await getCurrentWeatherId();
+    weatherConditionsData["Weather Conditons"].forEach((conditon) => {
+      if (conditon.id == id) {
+        displayData(conditon.main);
+        displayData(conditon.description);
+      }
+    });
+  } catch {
+    console.log("Could not get weather description or main");
+  }
+}
+
 setBackGroundColour();
+getIcon();
+getDescription();
+
 getWeather();
 getTemp();
