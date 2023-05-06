@@ -12,3 +12,11 @@ body {
   margin: 2rem;
   background-color: aliceblue;
 }
+
+.weatherCard {
+  border-radius: 10px;
+  background-color: white;
+  max-width: 14rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
