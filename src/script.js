@@ -30,6 +30,8 @@ const getWeatherBtn = document.getElementById("getWeatherBtn");
 const header = document.getElementById("h1");
 
 const currentSearchResults = [];
+export const expandButtonArray = [];
+export const removeButtonArray = [];
 
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
@@ -183,3 +185,5 @@ function displayData(data) {
 createNewWeatherItem();
 
 window.currentSearchResults = currentSearchResults;
+window.removeButtonArray = removeButtonArray;
+window.expandButtonArray = expandButtonArray;

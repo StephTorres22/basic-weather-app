@@ -1,5 +1,5 @@
-import { docuBody } from "./script.js";
 import { body } from "./DOM.js";
+import { expandButtonArray, removeButtonArray } from "./script.js";
 
 export class WeatherItem {
   constructor(location, temp, weather, description, icon) {
@@ -15,9 +15,17 @@ export class WeatherItem {
     weatherCard.classList.add("weatherCard");
     body.appendChild(weatherCard);
 
+    const headerDiv = document.createElement("div");
+    weatherCard.appendChild(headerDiv);
+
     const city = document.createElement("h1");
-    weatherCard.appendChild(city);
+    headerDiv.appendChild(city);
     city.innerText = this.location;
+
+    const removeButton = document.createElement("button");
+    removeButtonArray.push(removeButton);
+    headerDiv.appendChild(removeButton);
+    headerDiv.classList.add('cardHeader')
 
     const image = document.createElement("img");
     weatherCard.appendChild(image);
@@ -29,23 +37,6 @@ export class WeatherItem {
 
     const temperature = document.createElement("h3");
     weatherCard.appendChild(temperature);
-    temperature.innerText = this.temp;
+    temperature.innerText = this.temp.toFixed(1); //now a string, also to 1 D.P rounded.
   }
-
-  /* needs a display method, similar to project/todo-list */
-
-  /*  displayWeather() {
-    console.log("are we getting here");
-    let weatherCard = document.createElement("div");
-    weatherCard.classList.add("weatherCard");
-    docuBody.appendChild(weatherCard);
-
-    let location = document.createElement("h1");
-    weatherCard.appendChild(location);
-    location.innerText = `${this.location}`;
-
-    let temp = document.createElement("h2");
-    weatherCard.appendChild(temp);
-    temp.innerText = `${this.temp}`;
-  } */
 }

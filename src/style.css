@@ -20,3 +20,9 @@ body {
   padding: 0.5rem;
   margin-bottom: 1rem;
 }
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 .5rem;
+}
