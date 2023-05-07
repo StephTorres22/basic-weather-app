@@ -21,8 +21,12 @@ body {
   margin-bottom: 1rem;
 }
 
-.cardHeader {
+.cardHeader, .cardFooter {
   display: flex;
   justify-content: space-between;
+  margin: 0 .5rem;
+}
+
+.cardMiddle{
   margin: 0 .5rem;
 }
