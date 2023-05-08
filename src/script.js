@@ -35,11 +35,11 @@ export const removeButtonArray = [];
 
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
-  createNewWeatherItem();
-
-  console.log(currentSearchResults);
+  getWeather();
+  getCurrentWeatherCondition();
 });
 
+let count = 0;
 async function getWeather(place = "London", country = "uk") {
   /* try catch, handle errors! */
   place = city.value || place; //this calls either the value of input, or default value
@@ -48,13 +48,20 @@ async function getWeather(place = "London", country = "uk") {
     { mode: "cors" }
   );
   const data = await weatherData.json();
+  count++;
+  console.log(count);
 
-  /* console.log(data);
-  console.log(data.main); */
-  /*  displayData(data.weather[0].main);
+  const currentWeather = {};
+  console.log(currentWeather);
+  currentWeather.conditon = data.weather[0].main;
+  currentWeather.temp = data.main.temp;
+  currentWeather.description = data.weather[0].description;
+  currentWeather.iconNumber = data.weather[0].icon;
+  console.log(currentWeather);
+  /* 
   displayData(convertUnixToDate(data.sys.sunrise));
   displayData(convertUnixToDate(data.sys.sunset)); */
-  return data;
+  return currentWeather;
   //returning data this way, not as obj{}, means we have access to it outside of this function! very cool
 }
 /* everything will be waiting on this!, does that mean they need to be async functions */
@@ -69,65 +76,15 @@ function convertUnixToDate(unix) {
   //or toLocalTimeString, just gives actual time
 }
 
-async function getCurrentWeatherCondition(location) {
-  try {
-    const data = await getWeather(location);
-    const conditon = await data.weather[0].main;
-    return conditon;
-  } catch {
-    console.log("not reading weather condition");
-  }
-}
-
-/* declare async so we can use await to wait from data from getWeather to return
-getWeather returns obj that we can access different values of from dot notation. */
-async function getTemp(location) {
-  try {
-    const data = await getWeather(location);
-    const temp = await data.main.temp;
-    return temp;
-  } catch {
-    console.log("not reading weather temp");
-  }
-}
-
-/* this uses weatherconditions json as source for each description and weather type comparing against id of object, vs current weather id from
-openweather. */
-async function getDescription() {
-  try {
-    const data = await getWeather(location);
-    const description = await data.weather[0].description;
-    return description;
-  } catch {
-    console.log("Could not get weather description or main");
-  }
-}
-
-async function getIcon(location) {
-  const data = await getWeather(location);
-  const iconNumber = await data.weather[0].icon;
-  const src = `https://openweathermap.org/img/wn/${iconNumber}@2x.png`;
-  return src;
-}
-
-async function getCurrentWeatherId() {
-  try {
-    const data = await getWeather();
-    const id = await data.weather[0].id;
-    return id;
-  } catch {
-    console.log("Couldn't get current weather id");
-  }
-}
-
 async function createNewWeatherItem() {
+  let data = await getWeather();
   let location = city.value || "London";
   let newWeatherItem = new WeatherItem(
     location,
-    await getTemp(location),
-    await getCurrentWeatherCondition(location),
-    await getDescription(location),
-    await getIcon(location)
+    data.temp,
+    data.conditon,
+    data.description,
+    data.iconNumber
   );
   currentSearchResults.push(newWeatherItem);
   newWeatherItem.createWeatherCard();
@@ -183,7 +140,6 @@ function displayData(data) {
 }
 
 createNewWeatherItem();
-
 window.currentSearchResults = currentSearchResults;
 window.removeButtonArray = removeButtonArray;
 window.expandButtonArray = expandButtonArray;

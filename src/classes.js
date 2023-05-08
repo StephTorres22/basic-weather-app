@@ -1,6 +1,7 @@
 import { body } from "./DOM.js";
-import { expandButtonArray, removeButtonArray } from "./script.js";
+import { expandButtonArray, removeButtonArray, getTemp } from "./script.js";
 
+/* refresh method to check that display is up to date and correct */
 
 export class WeatherItem {
   constructor(location, temp, weather, description, icon) {
@@ -17,6 +18,7 @@ export class WeatherItem {
     body.appendChild(weatherCard);
 
     const headerDiv = document.createElement("div");
+    headerDiv.classList.add("cardHeader");
     weatherCard.appendChild(headerDiv);
 
     const city = document.createElement("h1");
@@ -26,7 +28,9 @@ export class WeatherItem {
     const removeButton = document.createElement("button");
     removeButtonArray.push(removeButton);
     headerDiv.appendChild(removeButton);
-    headerDiv.classList.add("cardHeader");
+    const removeButtonImage = document.createElement("img");
+    removeButtonImage.setAttribute("src", "./assets/window-close.svg");
+    removeButton.appendChild(removeButtonImage);
 
     const cardMiddle = document.createElement("div");
     weatherCard.appendChild(cardMiddle);
@@ -34,7 +38,7 @@ export class WeatherItem {
 
     const image = document.createElement("img");
     cardMiddle.appendChild(image);
-    image.src = this.icon;
+    image.src = `https://openweathermap.org/img/wn/${this.icon}@2x.png`
 
     const currentWeather = document.createElement("h3");
     cardMiddle.appendChild(currentWeather);
@@ -51,9 +55,13 @@ export class WeatherItem {
     const expandButton = document.createElement("button");
     expandButton.setAttribute("type", "button");
     const expandButtonImage = document.createElement("img");
-    expandButtonImage.setAttribute("src", "/assets/arrow-expand.svg");
+    expandButtonImage.setAttribute("src", "./assets/arrow-expand.svg");
     expandButtonArray.push(expandButton);
     expandButton.appendChild(expandButtonImage);
     footerDiv.appendChild(expandButton);
   }
+
+
+
+
 }
