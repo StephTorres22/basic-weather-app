@@ -22,21 +22,21 @@ display time and date?...*/
 import "../src/style.css";
 import weatherConditionsData from "../weatherCondition.json"; //this accessible straight away!
 import { WeatherItem } from "./classes.js";
-import { createWeatherCard } from "./DOM.js";
+import { createWeatherCard, removeCards } from "./DOM.js";
 
 export const docuBody = document.querySelector("body");
 const city = document.getElementById("city");
 const getWeatherBtn = document.getElementById("getWeatherBtn");
 const header = document.getElementById("h1");
 
+const cities = [];
+
 const currentSearchResults = [];
-export const expandButtonArray = [];
-export const removeButtonArray = [];
 
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
-  getWeather();
-  getCurrentWeatherCondition();
+  createNewWeatherItem();
+  cities.push(city.value);
 });
 
 let count = 0;
@@ -51,13 +51,15 @@ async function getWeather(place = "London", country = "uk") {
   count++;
   console.log(count);
 
+  console.log[data];
+
   const currentWeather = {};
-  console.log(currentWeather);
+  currentWeather.location = data.name; //+ ", " + data.sys.country;
   currentWeather.conditon = data.weather[0].main;
   currentWeather.temp = data.main.temp;
   currentWeather.description = data.weather[0].description;
   currentWeather.iconNumber = data.weather[0].icon;
-  console.log(currentWeather);
+  currentWeather.country = data.sys.country;
   /* 
   displayData(convertUnixToDate(data.sys.sunrise));
   displayData(convertUnixToDate(data.sys.sunset)); */
@@ -76,18 +78,39 @@ function convertUnixToDate(unix) {
   //or toLocalTimeString, just gives actual time
 }
 
-async function createNewWeatherItem() {
-  let data = await getWeather();
-  let location = city.value || "London";
+async function createNewWeatherItem(location) {
+  let data = await getWeather(location);
   let newWeatherItem = new WeatherItem(
-    location,
+    data.location,
     data.temp,
     data.conditon,
     data.description,
-    data.iconNumber
+    data.iconNumber,
+    data.country
   );
-  currentSearchResults.push(newWeatherItem);
-  newWeatherItem.createWeatherCard();
+
+  if (currentSearchResults.length === 0) {
+    currentSearchResults.push(newWeatherItem);
+    newWeatherItem.createWeatherCard();
+  }
+
+  for (let i = 0; i < currentSearchResults.length; i++) {
+    let weatherItem = currentSearchResults[i];
+
+    if (weatherItem.location == newWeatherItem.location) {
+      currentSearchResults.splice(i, 1, newWeatherItem);
+    } else {
+      currentSearchResults.push(newWeatherItem);
+    }
+  }
+}
+
+function updateCards() {
+  removeCards();
+  for (let i = 0; i < currentSearchResults.length; i++) {
+    createNewWeatherItem(currentSearchResults[i].location);
+    currentSearchResults[i].createWeatherCard();
+  }
 }
 
 /* async function displayWeather() {
@@ -140,6 +163,7 @@ function displayData(data) {
 }
 
 createNewWeatherItem();
+setInterval(updateCards, 60000);
 window.currentSearchResults = currentSearchResults;
-window.removeButtonArray = removeButtonArray;
-window.expandButtonArray = expandButtonArray;
+//window.removeButtonArray = removeButtonArray;
+//window.expandButtonArray = expandButtonArray;

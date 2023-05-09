@@ -1,20 +1,23 @@
-import { body } from "./DOM.js";
-import { expandButtonArray, removeButtonArray, getTemp } from "./script.js";
+import { body, expandButtonArray, removeButtonArray, weatherCardArray } from "./DOM.js";
+
 
 /* refresh method to check that display is up to date and correct */
 
 export class WeatherItem {
-  constructor(location, temp, weather, description, icon) {
+  constructor(location, temp, weather, decription, icon, country) {
     this.location = location;
+    
     this.temp = temp;
     this.weather = weather;
     // this.description = description;
     this.icon = icon;
+    this.country = country
   }
 
   createWeatherCard() {
     const weatherCard = document.createElement("div");
     weatherCard.classList.add("weatherCard");
+    weatherCardArray.push(weatherCard);
     body.appendChild(weatherCard);
 
     const headerDiv = document.createElement("div");
@@ -23,7 +26,7 @@ export class WeatherItem {
 
     const city = document.createElement("h1");
     headerDiv.appendChild(city);
-    city.innerText = this.location;
+    city.innerText = this.location + ', ' + this.country;
 
     const removeButton = document.createElement("button");
     removeButtonArray.push(removeButton);
@@ -50,7 +53,7 @@ export class WeatherItem {
 
     const temperature = document.createElement("h3");
     footerDiv.appendChild(temperature);
-    temperature.innerText = this.temp.toFixed(1); //now a string, also to 1 D.P rounded.
+    temperature.innerText = this.temp.toFixed(1) + '\u00B0'; //now a string, also to 1 D.P rounded.
 
     const expandButton = document.createElement("button");
     expandButton.setAttribute("type", "button");
