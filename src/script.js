@@ -5,42 +5,49 @@ toggle between cel and fahr
 
 unix conversion function.
 
-decide what information you want to display.
+
 
 need a function to refresh display each time btn is clicked
 
+expand button functionality, 5day forcast,
 
-use fetch, asyn await
+remover button functionality, remove card and weatherItem
 
-want a card for each different location searched.
+c - f toggle for temp
 
-set time out to update each card so it is up to date.
+display local time for each current weatherItem/card? 
 
 
-use set timeout to update each second?...
+
+
+
+
+
+
 display time and date?...*/
 import "../src/style.css";
 import weatherConditionsData from "../weatherCondition.json"; //this accessible straight away!
 import { WeatherItem } from "./classes.js";
-import { createWeatherCard, removeCards } from "./DOM.js";
+import {
+  cardHolder,
+  createWeatherCard,
+  weatherCardArray,
+  removeCards,
+} from "./DOM.js";
 
-export const docuBody = document.querySelector("body");
 const city = document.getElementById("city");
 const getWeatherBtn = document.getElementById("getWeatherBtn");
-const header = document.getElementById("h1");
 
-const cities = [];
-
-const currentSearchResults = [];
+export const currentSearchResults = [];
 
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
   createNewWeatherItem();
-  cities.push(city.value);
+  city.value = "";
 });
 
 let count = 0;
-async function getWeather(place = "London", country = "uk") {
+async function getWeather(place, country = "uk") {
   /* try catch, handle errors! */
   place = city.value || place; //this calls either the value of input, or default value
   const weatherData = await fetch(
@@ -89,27 +96,41 @@ async function createNewWeatherItem(location) {
     data.country
   );
 
+  //should probably abstract this into a serparate function that takes array and weatherItem as parametres...?
+  //updateCards()//need to change where the cards go!;
+  //checks to see if there are any current searches
   if (currentSearchResults.length === 0) {
     currentSearchResults.push(newWeatherItem);
     newWeatherItem.createWeatherCard();
-  }
+  } else {
+    for (let i = 0; i < currentSearchResults.length; i++) {
+      let weatherItem = currentSearchResults[i];
 
-  for (let i = 0; i < currentSearchResults.length; i++) {
-    let weatherItem = currentSearchResults[i];
 
-    if (weatherItem.location == newWeatherItem.location) {
-      currentSearchResults.splice(i, 1, newWeatherItem);
-    } else {
-      currentSearchResults.push(newWeatherItem);
+      //checks for any duplicate locations, probably need to add country to this condition, case Chester
+      if (
+        weatherItem.location == newWeatherItem.location &&
+        weatherItem.country == newWeatherItem.country
+      ) {
+        weatherCardArray.splice(i, 1);
+        currentSearchResults.splice(i, 1, newWeatherItem);
+        //cardHolder.removeChild(targetDiv);
+        removeCards();
+        currentSearchResults.forEach((weatherItem) => {
+          weatherItem.createWeatherCard();
+        });
+      } else {
+        currentSearchResults.push(newWeatherItem);
+        newWeatherItem.createWeatherCard();
+      }
+
     }
   }
 }
 
 function updateCards() {
-  removeCards();
   for (let i = 0; i < currentSearchResults.length; i++) {
     createNewWeatherItem(currentSearchResults[i].location);
-    currentSearchResults[i].createWeatherCard();
   }
 }
 
@@ -162,7 +183,7 @@ function displayData(data) {
   newHeader.innerText = data;
 }
 
-createNewWeatherItem();
+createNewWeatherItem("London");
 setInterval(updateCards, 60000);
 window.currentSearchResults = currentSearchResults;
 //window.removeButtonArray = removeButtonArray;

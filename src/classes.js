@@ -1,4 +1,4 @@
-import { body, expandButtonArray, removeButtonArray, weatherCardArray } from "./DOM.js";
+import { body, cardHolder, expandButtonArray, removeButtonArray, weatherCardArray } from "./DOM.js";
 
 
 /* refresh method to check that display is up to date and correct */
@@ -18,7 +18,7 @@ export class WeatherItem {
     const weatherCard = document.createElement("div");
     weatherCard.classList.add("weatherCard");
     weatherCardArray.push(weatherCard);
-    body.appendChild(weatherCard);
+    cardHolder.appendChild(weatherCard);
 
     const headerDiv = document.createElement("div");
     headerDiv.classList.add("cardHeader");
