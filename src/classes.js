@@ -2,7 +2,7 @@ import { body, cardHolder, expandButtonArray, removeButtonArray, weatherCardArra
 
 
 /* refresh method to check that display is up to date and correct */
-
+/* 
 export class WeatherItem {
   constructor(location, temp, weather, decription, icon, country) {
     this.location = location;
@@ -67,4 +67,4 @@ export class WeatherItem {
 
 
 
-}
+} */
