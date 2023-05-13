@@ -9,11 +9,23 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="searchDiv">
-      <input type="text" name="city" id="city" placeholder="Type a city" />
-      <button type="button" id="getWeatherBtn">Get weather</button>
+    <div class="top">
+      <div class="searchDiv">
+        <input type="text" name="city" id="city" placeholder="Type a city" />
+        <button type="button" id="getWeatherBtn">Get weather</button>
+      </div>
+      <div class="currentWeatherCard">
+        <div class="locationTimeDate"></div>
+        <div class="weatherConditions"></div>
+      </div>
     </div>
 
-    <div class="cardHolder"></div>
+    <div class="bottom">
+      <div class="fiveDayWeatherCard"></div>
+      <div class="fiveDayWeatherCard"></div>
+      <div class="fiveDayWeatherCard"></div>
+      <div class="fiveDayWeatherCard"></div>
+      <div class="fiveDayWeatherCard"></div>
+    </div>
   </body>
 </html>

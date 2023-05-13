@@ -9,36 +9,30 @@
 }
 
 body {
-  margin: 2rem;
+  margin: 0;
   background-color: aliceblue;
 }
 
-.weatherCard {
-  border-radius: 10px;
-  background-color: white;
-  max-width: 14rem;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+.weatherConditions {
+  border: 1px solid blue;
+  width: 50%;
+  min-height: 100%;
 }
 
-.cardHeader,
-.cardFooter {
+.top {
+  border: 1px solid black;
+  min-height: 60vh;
+  width: auto;
+}
+
+.bottom {
+  border: 1px solid pink;
+  min-height: 40vh;
   display: flex;
-  justify-content: space-between;
-  margin: 0 0.5rem;
+  justify-content: space-evenly;
 }
 
-.cardMiddle {
-  margin: 0 0.5rem;
-}
-
-.weatherCard img {
-  width: 2rem;
-  height: auto;
-}
-
-.weatherCard button{
-  border: none;
-  background: none;
-  
+.fiveDayWeatherCard {
+  border: 1px solid red;
+  border-radius: 10px;
 }
