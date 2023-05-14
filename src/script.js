@@ -35,6 +35,7 @@ import {
   removeCards,
   displayCurrentWeather,
 } from "./DOM.js";
+import { seperateDays } from "./fiveDayForecast.js";
 
 const city = document.getElementById("city");
 const getWeatherBtn = document.getElementById("getWeatherBtn");
@@ -74,6 +75,7 @@ async function getWeather(place, country = "uk") {
   displayData(convertUnixToDate(data.sys.sunset)); */
   return currentWeather;
 }
+
 /* everything will be waiting on this!, does that mean they need to be async functions */
 /* time zone is referenced in seconds +/- of GMT currently uk is 3600, an hour ahead/BST
     dt stands for date time, time stamp using unix time stamp, counts in seconds from jan 1st 1970 UTC
@@ -88,13 +90,17 @@ function convertUnixToDate(unix) {
 
 async function renderCurrentWeather(location) {
   let data = await getWeather(location);
-
-  console.log("are we doing anything");
-
-  displayCurrentWeather(data.temp, data.conditon, data.iconNumber);
+  displayCurrentWeather(
+    data.temp,
+    data.conditon,
+    data.iconNumber,
+    data.location,
+    data.country
+  );
 }
 
 renderCurrentWeather("London");
+seperateDays("London");
 
 //setInterval(updateCards, 60000); // turned to half minute for dev
 window.currentSearchResults = currentSearchResults;
