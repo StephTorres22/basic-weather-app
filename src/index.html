@@ -10,14 +10,15 @@
   </head>
   <body>
     <div class="top">
+      <div class="search">
+        <input type="text" name="city" id="city" placeholder="Type a city" />
+        <button type="button" id="getWeatherBtn">Get weather</button>
+      </div>
      
       <div class="currentWeatherCard">
-        <div class="weatherConditions"></div>
-        <div class="locationTimeDate">
-          <div class="searchDiv">
-            <input type="text" name="city" id="city" placeholder="Type a city" />
-            <button type="button" id="getWeatherBtn">Get weather</button>
-          </div>
+        <div class="weatherConditions" data-weather-conditions=""></div>
+        <div class="locationTimeDate" data-location-time-date="">
+          
         </div>
        
       </div>

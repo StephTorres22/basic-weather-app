@@ -35,7 +35,7 @@ import {
   removeCards,
   displayCurrentWeather,
 } from "./DOM.js";
-import { seperateDays } from "./fiveDayForecast.js";
+import { seperateDays, getDayOverviewIcon } from "./fiveDayForecast.js";
 
 const city = document.getElementById("city");
 const getWeatherBtn = document.getElementById("getWeatherBtn");
@@ -100,7 +100,8 @@ async function renderCurrentWeather(location) {
 }
 
 renderCurrentWeather("London");
-seperateDays("London");
+//seperateDays("London");
+getDayOverviewIcon('London')
 
 //setInterval(updateCards, 60000); // turned to half minute for dev
 window.currentSearchResults = currentSearchResults;
