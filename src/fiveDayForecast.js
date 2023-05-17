@@ -53,8 +53,6 @@ export async function seperateDays(location) {
 
     const values = Object.values(counter); //values is an array containing the different number of occurences for each date, should only be a length of 5 or 6
 
-    console.log(values);
-
     //loop through values and use value at index as count for how many objects to splice.
     for (let i = 0; i < values.length; i++) {
       seperatedDays[i] = dup.splice(0, values[i]); //didn't think splice would work like this, but this is great
@@ -73,8 +71,16 @@ export async function getDayOverviewIcon(location) {
     /* array containing each day with forecast at 3hr intervals [[],[]...]*/
     const fiveDayForecast = await seperateDays(location);
 
+    //array containing obj, icon and occurence
     const iconCounterArray = [];
 
+    //array containting just occurences of each icon in nested array for each day
+    const occurencesPerDay = [];
+    const highestOccurencePerDay = [];
+
+    const dayOverviewIcon = [];
+
+    //loop for populating above arrays
     for (let i = 0; i < fiveDayForecast.length; i++) {
       const iconCounter = {};
       let day = fiveDayForecast[i];
@@ -86,12 +92,37 @@ export async function getDayOverviewIcon(location) {
         } else {
           iconCounter[icon] = 1;
         }
+
         iconCounterArray[i] = iconCounter;
+        occurencesPerDay[i] = Object.values(iconCounterArray[i]);
+        // dayOverviewIcon.push(Math.max(...iconCounterArray[i]));
       });
-      console.log(iconCounter);
     }
 
-    console.log(iconCounterArray);
+    /* is this all surplus and can be done in the first nested loop?... */
+
+    //this works just to get max value of each day, can probably loop through occurencesPerDay
+    occurencesPerDay.forEach((day) => {
+      highestOccurencePerDay.push(Math.max(...day));
+    });
+
+    /* Loops through each obj in iconCounterArray, compares values to highestOccurence..[i] and pushes key to dayOverviewIconArray at the relevant index. */
+    for (let i = 0; i < iconCounterArray.length; i++) {
+      let day = iconCounterArray[i];
+
+      for (const [key, value] of Object.entries(day)) {
+        if (value === highestOccurencePerDay[i]) {
+          dayOverviewIcon[i] = key;
+        }
+      }
+    }
+
+    console.log(
+      iconCounterArray,
+      occurencesPerDay,
+      highestOccurencePerDay,
+      dayOverviewIcon
+    );
   } catch {
     console.log("Unable to get icon for each day.");
   }
