@@ -17,7 +17,7 @@ body {
 .top {
   border: 1px solid black;
   min-height: 60vh;
-  width: 100vw;
+  width: 100svw;
 }
 
 /* SEARCH BAR DIV */
@@ -27,7 +27,7 @@ body {
 
 /* WEATHER CARD SPLIT IN TWO */
 .currentWeatherCard {
-  min-width: 100vw;
+  min-width: 100svw;
   min-height: inherit;
   display: grid;
   grid-template-columns: repeat(2, 1fr);

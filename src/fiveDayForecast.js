@@ -1,5 +1,7 @@
 /* sort data by day/date */
 
+/* want min max temps for each day, icon, date/day */
+
 /* gets 5 day 3hr interval forecast */
 async function getFiveDayForecast(place) {
   place = city.value || place;
@@ -15,6 +17,7 @@ async function getFiveDayForecast(place) {
       use that as rough forecast for the day,
       take lowest and highest temp for the day as temp range */
     const data = await forecast.json();
+
     return data;
   } catch {
     console.log("Unable to fetch five day forecast");
@@ -59,71 +62,88 @@ export async function seperateDays(location) {
       //seperatedDays is now a nested array containing 3hr forecasts for each day in a 5 day period separated by date.
     }
 
+    const icons = getDayOverviewIcon(seperatedDays);
+    const minMaxTemps = getMinMaxTempPerDay(seperatedDays);
+
+    const fiveDayForeCastObjectArray = [];
+    const fiveDayForeCastObject = {};
+    console.log(icons, minMaxTemps);
     return seperatedDays;
   } catch {
-    console.log("Unable to serperate data into seperate days");
+    console.log("Unable to seperate data into seperate days");
   }
 }
 
-/* counts occurrence of each icon for each day */
-export async function getDayOverviewIcon(location) {
-  try {
-    /* array containing each day with forecast at 3hr intervals [[],[]...]*/
-    const fiveDayForecast = await seperateDays(location);
+/* counts occurrence of each icon for each day, gets most frequent, pushes it to array, returns array containing iconcode for each day.*/
+function getDayOverviewIcon(array) {
+  /* array containing each day with forecast at 3hr intervals [[],[]...]*/
+  //array containing obj, icon and occurence
+  const iconCounterArray = [];
+  //array containting just occurences of each icon in nested array for each day
+  const occurencesPerDay = [];
+  const highestOccurencePerDay = [];
+  const dayOverviewIcon = [];
 
-    //array containing obj, icon and occurence
-    const iconCounterArray = [];
+  //loop for populating above arrays
+  for (let i = 0; i < array.length; i++) {
+    const iconCounter = {};
+    let day = array[i];
 
-    //array containting just occurences of each icon in nested array for each day
-    const occurencesPerDay = [];
-    const highestOccurencePerDay = [];
+    day.forEach((forecast) => {
+      let icon = forecast.weather[0].icon;
+      if (iconCounter[icon]) {
+        iconCounter[icon] += 1;
+      } else {
+        iconCounter[icon] = 1;
+      }
 
-    const dayOverviewIcon = [];
-
-    //loop for populating above arrays
-    for (let i = 0; i < fiveDayForecast.length; i++) {
-      const iconCounter = {};
-      let day = fiveDayForecast[i];
-
-      day.forEach((forecast) => {
-        let icon = forecast.weather[0].icon;
-        if (iconCounter[icon]) {
-          iconCounter[icon] += 1;
-        } else {
-          iconCounter[icon] = 1;
-        }
-
-        iconCounterArray[i] = iconCounter;
-        occurencesPerDay[i] = Object.values(iconCounterArray[i]);
-        // dayOverviewIcon.push(Math.max(...iconCounterArray[i]));
-      });
-    }
-
-    /* is this all surplus and can be done in the first nested loop?... */
-
-    //this works just to get max value of each day, can probably loop through occurencesPerDay
-    occurencesPerDay.forEach((day) => {
-      highestOccurencePerDay.push(Math.max(...day));
+      iconCounterArray[i] = iconCounter;
+      occurencesPerDay[i] = Object.values(iconCounterArray[i]);
+      // dayOverviewIcon.push(Math.max(...iconCounterArray[i]));
     });
+  }
 
-    /* Loops through each obj in iconCounterArray, compares values to highestOccurence..[i] and pushes key to dayOverviewIconArray at the relevant index. */
-    for (let i = 0; i < iconCounterArray.length; i++) {
-      let day = iconCounterArray[i];
+  /* is this all surplus and can be done in the first nested loop?... */
 
-      for (const [key, value] of Object.entries(day)) {
-        if (value === highestOccurencePerDay[i]) {
-          dayOverviewIcon[i] = key;
-        }
+  //this works just to get max value of each day, can probably loop through occurencesPerDay
+  occurencesPerDay.forEach((day) => {
+    highestOccurencePerDay.push(Math.max(...day));
+  });
+
+  /* Loops through each obj in iconCounterArray, compares values to highestOccurence..[i] and pushes key to dayOverviewIconArray at the relevant index. */
+  for (let i = 0; i < iconCounterArray.length; i++) {
+    let day = iconCounterArray[i];
+
+    for (const [key, value] of Object.entries(day)) {
+      if (value === highestOccurencePerDay[i]) {
+        dayOverviewIcon[i] = key;
       }
     }
-
-    console.log(
-      iconCounterArray,
-      occurencesPerDay,
-      highestOccurencePerDay,
-      dayOverviewIcon
-    );
-  } catch {
-    console.log("Unable to get icon for each day.");
   }
+
+  return dayOverviewIcon;
+}
+
+/* gets min and max temps for each day */
+function getMinMaxTempPerDay(array) {
+  const allTemps = [];
+  const minMaxTemps = [];
+
+  for (let i = 0; i < array.length; i++) {
+    let day = array[i];
+    let dayTemp = [];
+    day.forEach((interval) => {
+      dayTemp.push(interval.main.temp_min);
+      dayTemp.push(interval.main.temp_max);
+      allTemps[i] = dayTemp;
+    });
+  }
+
+  allTemps.forEach((day, index) => {
+    minMaxTemps[index] = [];
+    minMaxTemps[index].push(Math.min(...day));
+    minMaxTemps[index].push(Math.max(...day));
+  });
+
+  return minMaxTemps;
 }
