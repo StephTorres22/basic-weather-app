@@ -17,8 +17,6 @@ style search bar
 would be could to have a city search so you get the right country,
 or implement geohandler*/
 
-
-
 import { currentSearchResults } from "./script.js";
 
 export const body = document.querySelector("body");
@@ -71,9 +69,21 @@ export function createFiveDayWeatherCard(
   maxTemp,
   parent
 ) {
+  const top = document.createElement("div");
+  parent.appendChild(top);
+  top.classList.add("weatherCardTop");
+
   const day = document.createElement("h3");
-  parent.appendChild(day);
+  top.appendChild(day);
   day.innerText = weekday;
+
+  const expandButton = document.createElement("button");
+  expandButton.setAttribute("type", "button");
+  const expandButtonImage = document.createElement("img");
+  expandButtonImage.setAttribute("src", "./assets/arrow-expand.svg");
+  
+  expandButton.appendChild(expandButtonImage);
+  top.appendChild(expandButton)
 
   const image = document.createElement("img");
   parent.appendChild(image);
@@ -86,8 +96,6 @@ export function createFiveDayWeatherCard(
   const minimum = document.createElement("h4");
   parent.appendChild(minimum);
   minimum.innerText = minTemp.toFixed(1) + "\u00B0";
-
-  
 }
 
 /*  
@@ -132,8 +140,8 @@ export function removeElements(parent) {
   }
 }
 
-export function removeElementsFromFiveDayForecastCards(){
-  for(let i = 0; i<fiveDayWeatherCardArray.length; i++){
+export function removeElementsFromFiveDayForecastCards() {
+  for (let i = 0; i < fiveDayWeatherCardArray.length; i++) {
     removeElements(fiveDayWeatherCardArray[i]);
   }
 }

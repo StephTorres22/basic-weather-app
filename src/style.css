@@ -66,3 +66,12 @@ body {
   border-radius: 10px;
   height: 100%;
 }
+
+.weatherCardTop{
+  display: flex;
+  justify-content: space-between;
+}
+
+.weatherCardTop img{
+  width: 2rem;
+}

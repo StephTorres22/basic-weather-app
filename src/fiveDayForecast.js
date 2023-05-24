@@ -119,6 +119,10 @@ function getDayOverviewIcon(array) {
     });
   }
 
+
+ 
+
+
   /* is this all surplus and can be done in the first nested loop?... */
 
   //this works just to get max value of each day, can probably loop through occurencesPerDay
