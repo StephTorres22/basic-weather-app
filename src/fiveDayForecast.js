@@ -36,11 +36,9 @@ export async function seperateDays(location) {
       const date = dateTime.getDate();
       dates.push(date);
     }
-
     /* counts occurences of each date, first and last will be less than or equal to 8, middle dates will be 8.
   use this to count indexes */
     const counter = {};
-
     /* finds how many objects for each days are in the list, will be able to seperate list into days */
     dates.forEach((date) => {
       if (counter[date]) {
@@ -50,25 +48,35 @@ export async function seperateDays(location) {
       }
     });
 
-    const seperatedDays = [];
-
+    const seperatedDayObjects = [];
     const [...dup] = data.list; //data.list not mutated
 
     const values = Object.values(counter); //values is an array containing the different number of occurences for each date, should only be a length of 5 or 6
-
     //loop through values and use value at index as count for how many objects to splice.
     for (let i = 0; i < values.length; i++) {
-      seperatedDays[i] = dup.splice(0, values[i]); //didn't think splice would work like this, but this is great
+      seperatedDayObjects[i] = dup.splice(0, values[i]); //didn't think splice would work like this, but this is great
       //seperatedDays is now a nested array containing 3hr forecasts for each day in a 5 day period separated by date.
     }
 
-    const icons = getDayOverviewIcon(seperatedDays);
-    const minMaxTemps = getMinMaxTempPerDay(seperatedDays);
+    seperatedDayObjects.pop(); //gets rid of last day as isn't a full day and now have five objects to play with.
 
-    const fiveDayForeCastObjectArray = [];
-    const fiveDayForeCastObject = {};
-    console.log(icons, minMaxTemps);
-    return seperatedDays;
+    const icons = getDayOverviewIcon(seperatedDayObjects);
+    const minMaxTemps = getMinMaxTempPerDay(seperatedDayObjects);
+    const weekdays = getDay(seperatedDayObjects);
+
+    const fiveDayForecastObjectArray = [];
+
+    for (let i = 0; i < seperatedDayObjects.length; i++) {
+      const dayObj = createDayObj(
+        weekdays[i],
+        icons[i],
+        minMaxTemps[i][0],
+        minMaxTemps[i][1]
+      );
+      fiveDayForecastObjectArray[i] = dayObj;
+    }
+    console.log(fiveDayForecastObjectArray);
+    return fiveDayForecastObjectArray;
   } catch {
     console.log("Unable to seperate data into seperate days");
   }
@@ -146,4 +154,24 @@ function getMinMaxTempPerDay(array) {
   });
 
   return minMaxTemps;
+}
+
+/* gets day of the week for each day  */
+function getDay(array) {
+  const dayArray = [];
+  const options = { weekday: "short" };
+
+  for (let i = 0; i < array.length; i++) {
+    let day = array[i];
+    let date = new Date(day[0].dt_txt);
+    let weekday = new Intl.DateTimeFormat("en-GB", options).format(date);
+    dayArray.push(weekday);
+  }
+
+  return dayArray;
+}
+
+//factory for creating objs of each day using corresponding arrays to assign values
+function createDayObj(weekday, icon, minTemp, maxTemp) {
+  return { weekday, icon, minTemp, maxTemp };
 }

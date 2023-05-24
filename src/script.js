@@ -34,6 +34,8 @@ import {
   weatherCardArray,
   removeCards,
   displayCurrentWeather,
+  createFiveDayWeatherCard,
+  fiveDayWeatherCardArray,
 } from "./DOM.js";
 import {
   seperateDays,
@@ -103,8 +105,22 @@ async function renderCurrentWeather(location) {
   );
 }
 
+async function renderFiveDayForecast(location) {
+  const daysObjArray = await seperateDays(location);
+
+  daysObjArray.forEach((day, i) => {
+    createFiveDayWeatherCard(
+      day.weekday,
+      day.icon,
+      day.minTemp,
+      day.maxTemp,
+      fiveDayWeatherCardArray[i]
+    );
+  });
+}
+
 renderCurrentWeather("London");
-seperateDays("London");
+renderFiveDayForecast("London");
 
 //setInterval(updateCards, 60000); // turned to half minute for dev
 window.currentSearchResults = currentSearchResults;
