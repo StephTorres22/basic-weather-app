@@ -36,6 +36,10 @@ import {
   displayCurrentWeather,
   createFiveDayWeatherCard,
   fiveDayWeatherCardArray,
+  removeElementsFromFiveDayForecastCards,
+  removeElements,
+  currentCoditionsDiv,
+  locationTimeDate,
 } from "./DOM.js";
 import {
   seperateDays,
@@ -50,11 +54,18 @@ export const currentSearchResults = [];
 
 getWeatherBtn.addEventListener("click", (e) => {
   e.preventDefault;
-  createNewWeatherItem();
+  removeElements(currentCoditionsDiv);
+  removeElements(locationTimeDate);
+  removeElementsFromFiveDayForecastCards();
+  renderCurrentWeather();
+  renderFiveDayForecast();
   city.value = "";
 });
 
-let count = 0;
+/* REMEMBER TO DELETE COUNT, ONLY USING TO SEE HOW MANY CALLS ARE MADE TO  */
+export let count = 0;
+
+
 async function getWeather(place, country = "uk") {
   /* try catch, handle errors! */
   place = city.value || place; //this calls either the value of input, or default value
@@ -106,7 +117,9 @@ async function renderCurrentWeather(location) {
 }
 
 async function renderFiveDayForecast(location) {
-  const daysObjArray = await seperateDays(location);
+  const data = await seperateDays(location);
+  /* need to do a full call to recieve complete promise and then split it */
+  const daysObjArray = data.minimalData;
 
   daysObjArray.forEach((day, i) => {
     createFiveDayWeatherCard(

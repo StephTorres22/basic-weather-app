@@ -1,7 +1,7 @@
 /* sort data by day/date */
 
 /* want min max temps for each day, icon, date/day */
-
+let count = 0;
 /* gets 5 day 3hr interval forecast */
 async function getFiveDayForecast(place) {
   place = city.value || place;
@@ -17,6 +17,8 @@ async function getFiveDayForecast(place) {
       use that as rough forecast for the day,
       take lowest and highest temp for the day as temp range */
     const data = await forecast.json();
+    count++;
+    console.log(count);
 
     return data;
   } catch {
@@ -75,8 +77,14 @@ export async function seperateDays(location) {
       );
       fiveDayForecastObjectArray[i] = dayObj;
     }
-    console.log(fiveDayForecastObjectArray);
-    return fiveDayForecastObjectArray;
+
+    /* returns both arrays, could use nested array instead of obj to do this 
+    means I have access to both array of obs, so can use one for an overview and one for expansion of day for 3hr intervals,
+    think i'm still only making two calls to the api for each location.*/
+    return {
+      minimalData: fiveDayForecastObjectArray,
+      completeDate: seperatedDayObjects,
+    };
   } catch {
     console.log("Unable to seperate data into seperate days");
   }

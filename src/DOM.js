@@ -1,3 +1,24 @@
+/* add expand button for each 5day card to display weather for each 3hour interval.
+
+maybe add day as well as day 
+
+style cards 
+
+extra info for current weather,
+
+current weather refresh
+
+find a decent font 
+
+slider for f and c temp
+
+style search bar
+
+would be could to have a city search so you get the right country,
+or implement geohandler*/
+
+
+
 import { currentSearchResults } from "./script.js";
 
 export const body = document.querySelector("body");
@@ -12,7 +33,9 @@ const currentWeatherCard = document.querySelector(".currentWeatherCard");
 export const currentCoditionsDiv = document.querySelector(
   "[data-weather-conditions]"
 );
-export const locationTimeDate = document.querySelector("[data-location-time-date]");
+export const locationTimeDate = document.querySelector(
+  "[data-location-time-date]"
+);
 
 export const searchDiv = document.querySelector(".searchDiv");
 
@@ -29,13 +52,42 @@ export function displayCurrentWeather(temp, weather, icon, city, countryCode) {
   currentCoditionsDiv.appendChild(temperature);
   temperature.innerText = temp.toFixed(1) + "\u00B0";
 
-  const location = document.createElement('h1');
+  const location = document.createElement("h1");
   locationTimeDate.appendChild(location);
-  location.innerText = city +','
+  location.innerText = city + ",";
 
-  const country = document.createElement('h2');
+  const country = document.createElement("h2");
   locationTimeDate.appendChild(country);
   country.innerText = countryCode;
+}
+
+export const fiveDayWeatherCardArray = Array.from(
+  document.querySelectorAll("[data-five-day-weathercard]")
+);
+export function createFiveDayWeatherCard(
+  weekday,
+  icon,
+  minTemp,
+  maxTemp,
+  parent
+) {
+  const day = document.createElement("h3");
+  parent.appendChild(day);
+  day.innerText = weekday;
+
+  const image = document.createElement("img");
+  parent.appendChild(image);
+  image.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
+  const maximun = document.createElement("h4");
+  parent.appendChild(maximun);
+  maximun.innerText = maxTemp.toFixed(1) + "\u00B0";
+
+  const minimum = document.createElement("h4");
+  parent.appendChild(minimum);
+  minimum.innerText = minTemp.toFixed(1) + "\u00B0";
+
+  
 }
 
 /*  
@@ -74,12 +126,15 @@ export function displayCurrentWeather(temp, weather, icon, city, countryCode) {
     expandButtonArray.push(expandButton);
     expandButton.appendChild(expandButtonImage);
     footerDiv.appendChild(expandButton); */
-export function removeCards() {
-  while (cardHolder.firstChild) {
-    cardHolder.removeChild(cardHolder.firstChild);
+export function removeElements(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
   }
-  for (let i = 0; i < weatherCardArray.length; i++) {
-    weatherCardArray.splice(i, 1);
+}
+
+export function removeElementsFromFiveDayForecastCards(){
+  for(let i = 0; i<fiveDayWeatherCardArray.length; i++){
+    removeElements(fiveDayWeatherCardArray[i]);
   }
 }
 
