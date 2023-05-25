@@ -43,6 +43,7 @@ import {
   createThreeHourIntervalCard,
   modal,
   expandButtonArray,
+  displayDateModal,
 } from "./DOM.js";
 
 import { seperateDays } from "./fiveDayForecast.js";
@@ -100,7 +101,8 @@ async function getWeather(place, country = "uk") {
 function convertUnixToDate(unix) {
   const unixToMilliseconds = unix * 1000;
   const date = new Date(unixToMilliseconds);
-  return date.toLocaleString();
+  console.log(date);
+  return date.toString();
   //or toLocalTimeString, just gives actual time
 }
 
@@ -131,22 +133,24 @@ async function renderFiveDayForecast(location) {
       day.maxTemp,
       fiveDayWeatherCardArray[i]
     );
-  });
+  }); 
 
   expandButtonArray.forEach((button, index) => {
     button.addEventListener("click", (e) => {
-     // console.log(index, e.target);
+      // console.log(index, e.target);
 
-       if (e.target == expandButtonArray[index]) {
+      if (e.target == expandButtonArray[index]) {
+        removeElements(modal);
         console.log(index);
         renderThreeHourIntervals(intervalObjArray, index);
         modal.showModal();
-      } 
+      }
     });
   });
 }
 
 function renderThreeHourIntervals(array, index) {
+  displayDateModal(convertUnixToDate(array[index][0].dt));
   array[index].forEach((interval) => {
     createThreeHourIntervalCard(
       interval.dt_txt,

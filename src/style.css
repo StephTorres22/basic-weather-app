@@ -77,7 +77,15 @@ body {
   height: auto;
 }
 
-.weatherCardTop button {
+
+
+/* MODAL STYLES */
+
+.modalTop {
+  display: flex;
+  justify-content: space-between;
+}
+.threeHourIntervalModal {
   border: none;
-  background-color: transparent;
+  border-radius: 5px;
 }
