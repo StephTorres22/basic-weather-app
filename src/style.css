@@ -67,11 +67,17 @@ body {
   height: 100%;
 }
 
-.weatherCardTop{
+.weatherCardTop {
   display: flex;
   justify-content: space-between;
 }
 
-.weatherCardTop img{
+.weatherCardTop img {
   width: 2rem;
+  height: auto;
+}
+
+.weatherCardTop button {
+  border: none;
+  background-color: transparent;
 }
