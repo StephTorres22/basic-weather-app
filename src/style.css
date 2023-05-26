@@ -77,15 +77,20 @@ body {
   height: auto;
 }
 
-
-
 /* MODAL STYLES */
+.threeHourIntervalModal {
+  border-style: none;
+
+  border: 0;
+  border-radius: 10px;
+}
 
 .modalTop {
   display: flex;
   justify-content: space-between;
 }
-.threeHourIntervalModal {
-  border: none;
-  border-radius: 5px;
+
+.intervalContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }

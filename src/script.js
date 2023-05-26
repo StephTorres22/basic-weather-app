@@ -44,6 +44,8 @@ import {
   modal,
   expandButtonArray,
   displayDateModal,
+  intervalContainer,
+  modalTop,
 } from "./DOM.js";
 
 import { seperateDays } from "./fiveDayForecast.js";
@@ -63,9 +65,6 @@ getWeatherBtn.addEventListener("click", (e) => {
   city.value = "";
 });
 
-/* REMEMBER TO DELETE COUNT, ONLY USING TO SEE HOW MANY CALLS ARE MADE TO  */
-export let count = 0;
-
 async function getWeather(place, country = "uk") {
   /* try catch, handle errors! */
   place = city.value || place; //this calls either the value of input, or default value
@@ -74,8 +73,6 @@ async function getWeather(place, country = "uk") {
     { mode: "cors" }
   );
   const data = await weatherData.json();
-  count++;
-  console.log(count);
 
   const currentWeather = {};
   currentWeather.location = data.name; //+ ", " + data.sys.country;
@@ -133,15 +130,15 @@ async function renderFiveDayForecast(location) {
       day.maxTemp,
       fiveDayWeatherCardArray[i]
     );
-  }); 
+  });
 
   expandButtonArray.forEach((button, index) => {
     button.addEventListener("click", (e) => {
       // console.log(index, e.target);
 
       if (e.target == expandButtonArray[index]) {
-        removeElements(modal);
-        console.log(index);
+        removeElements(modalTop);
+        removeElements(intervalContainer);
         renderThreeHourIntervals(intervalObjArray, index);
         modal.showModal();
       }
@@ -158,8 +155,7 @@ function renderThreeHourIntervals(array, index) {
       interval.weather[0].main,
       interval.weather[0].description,
       interval.main.temp,
-      interval.wind.speed,
-      modal
+      interval.wind.speed
     );
   });
 }
